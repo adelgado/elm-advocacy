@@ -116,7 +116,7 @@ This gets even better with types that hold set of specific values. We could have
 for example, a type such as
 
 ```
-type alias Readable = Article | Quizz | Review | GroupList
+type Readable = Article | Quizz | Review | GroupList
 ```
 
 If anywhere in the code I need to know and evaluate the type of a value of this type,
@@ -148,6 +148,52 @@ had some value, it'll *always* have this value, brings us an ability to reason
 about code much more freely and effectively.
 
 
+Let's talk about the **Elm Architecture** now. The Elm architecture is very nice
+to talk about for people who are using Redux, because many of the concepts
+are either the same or very close. The idea of unidirectional data flow, for
+example, and why it's nice, is completely accepted by you guys.
+
+The Elm architecture has basically three parts: a `Model`, an `Update` function,
+and a `View`. A `Model` is used to hold the data that the program is operating on.
+The `Update` function is a function that receives an `Action`, a copy of the model,
+and returns a model, which is then made the current model. It is conceptually
+equivalent to Redux's `Reducer`s.
+
+A `View`, finally, is a function that takes a model object and returns HTML.
+
+```
+-- MODEL
+
+type alias Model = { ... }
+
+
+-- UPDATE
+
+type Action = Reset | ...
+
+update : Action -> Model -> Model
+update action model =
+  case action of
+    Reset -> ...
+    ...
+
+
+-- VIEW
+
+view : Model -> Html
+view =
+  ...
+```
+
+There is currently lots of cross-polination between Redux and Elm. It's not uncommon
+when reading Redux's issues to be faced with people illustrating Elm's solution
+to a specific problem.
+
+See the similarities?
+
+http://research.worksap.com/wp-content/uploads/2015/11/tea1_L.png
+
+http://blog.madewithlove.be/assets/posts/2015-10-20-redux/flux.png
 
 
 
