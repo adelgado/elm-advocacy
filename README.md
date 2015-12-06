@@ -1,19 +1,23 @@
 # Elm advocacy
 
-Elm is a language which compiles down to JavaScript and
-HTML. It has been influenced in its design by languages like Haskell, Rust or OCaml.
+## What is Elm?
 
+Elm is a web frontend programming language that compiles to JavaScript and HTML.
+It has been influenced in its design by languages like Haskell, Rust or OCaml.
 Additionally, there is something known as the Elm Architecture, which
 is a set of patterns and divisions concerning how to organize and structure
 the flow of information in a specific application.
 
-Elm is interesting because, by its characteristics, it aims to solve many of
-the problems encountered today when developing complex JavaScript applications,
-such as unknown breakage of code, brittleness when refactoring – which then
-may lead to an unwillingness to do so –, uncaught exceptions and exceptions in 
-general, a strong need for defensive programming and awareness of languages
-particularities – which derives one from the main focus of providing value
-through features to the end users –, among other things.
+## Why Elm?
+
+Elm is interesting for frontend developers because, by its characteristics,
+it aims to solve many of the problems encountered today when developing
+complex JavaScript applications, such as unknown breakage of code, brittleness
+when refactoring – which sometimes leads to an unwillingness to do so –,
+uncaught exceptions and exceptions in general, a strong need for defensive
+programming that – which derives one from the main focus of providing value
+through features to the end users, and could be alleviated at the language level –,
+among other things.
 
 Here are some of the characteristics Elm has, which help us fighting these problems:
 Elm is a functional, reactive, strongly typed, immutable programming language.
@@ -64,8 +68,8 @@ that while type annotations – but not types – are fully optional, you can st
 explicitely document them in order to ease the understanding of the code and
 hint the compiler to the types you actually mean.
 
-The function we were discussing
-is understood by the compiler as if it'd been defined and annotated as
+The function we were discussing is understood by the compiler as if it'd
+been defined and annotated as
 
 ```
 plusTwo : Int -> Int
@@ -73,25 +77,38 @@ plusTwo =
   n + 2
 ```
 
-While type inference in itself is already cool, the type system that Elm provides
+While type inference in itself is already nice, the type system that Elm provides
 is fundamentally difference from the one JavaScript provides, due to the fact
 that it offers parametric types. If you know Generics from C#/Java or templates
 from C++, you're kinda already familiar with the idea of parametric types, but
 Elm's execution of it brings us much more.
 
-Let's take the canonical example of the `Maybe` ~~monad~~ type. The `Maybe` type takes
-another type as an argument, and instances of it hold either of two values at any time:
-Either `Nothing`, or `Just a`. In this example, `a` itself is a type, so you
-could have a `Maybe String`, which would contain either `Nothing` or `Just String`.
+The most common example is the `Maybe` type. The `Maybe` type takes another
+type as an argument (let's say `String`), and its instances will hold one
+of two possible values at any time: Either the value `Nothing`, or a value
+of type `Just String`.
 
-Now, the reason why this is cool is because the tradicional way to model that in JS
-would be to use `null`. I have a variable, that normally can either hold a string,
+```
+frob : Maybe String -> Foo
+frob x = 
+  case x of
+    Nothing ->
+      -- do something here
+    Just x' ->
+      -- do something else
+```
+
+Now, this is cool is because the tradicional way to model this in JS would
+be to use `null`. I'd have a variable, that I'd know would either hold a string,
 or `null`. So in order to be fully safe, I'd have to check every time that I'm
 using this value, whether it holds something relevant or whether it is `null`.
 
 Except this requires great discipline, and potentially any value can be `null`,
 so in reality what happens is that these checks are nto written and you get
-exeptions in runtime. With Elm, **there are no runtime exceptions**. The big
+exeptions in runtime. And that's not even accounting for the fact that nothing
+prevents other code from assigning something completely unexpected to it.
+
+Elm aims to provide code that runs with **no runtime exceptions**. The big
 caveat for that statement is that nothing prevents the compiler to be buggy,
 of course. However, barring bugs in the compiler, Elm's
 **semantics are such that runtime errors are not possible**.
@@ -102,21 +119,10 @@ effectively destructure whatever value you think you're holding and make sure
 you handle it in the code. So, for example, if I have a value `x` typed as a
 `Maybe String`, and I want to access it, I need code such as
 
-SLIDE - Maybe
-
-```
-case x of
-  Nothing ->
-    -- do something here
-  Just x' ->
-    -- do something else
-```
 
 A failure to handle one of the cases would result in an error at *compile time*.
 This gets even better with types that hold set of specific values. We could have,
 for example, a type such as
-
-SLIDE Readable
 
 ```
 type Readable = Article | Quizz | Review | GroupList
@@ -142,7 +148,7 @@ There are of course many other advantages and very interesting characteristics
 regarding Elm's type system, but I have little time now, so I'll send some more
 references around at some point afterwards.
 
-SLIDE Immutable
+## Immutable
 
 The benefits **immutability** bring to the table are already being observed by us
 with the surge of immutable data structure libraries that we now use in JS. The
@@ -151,7 +157,7 @@ function can mutate it from somewhere else, that if at some point some variable
 had some value, it'll *always* have this value, brings us an ability to reason
 about code much more freely and effectively.
 
-SLIDE Architecture
+## Architecture
 
 Let's talk about the **Elm Architecture** now. The Elm architecture is very nice
 to talk about for people who are using Redux, because many of the concepts
@@ -166,21 +172,22 @@ equivalent to Redux's `Reducer`s.
 
 A `View`, finally, is a function that takes a model object and returns HTML.
 
-SLIDE Architecture
-
 There is currently lots of cross-polination between Redux and Elm. It's not uncommon
 when reading Redux's issues to be faced with people illustrating Elm's solution
 to a specific problem.
 
 See the similarities?
 
-SLIDE ERROR MESSAGES
+## Nice error messages
 
-extremely good error messages, effort involves, blog posts will send around
+Elm has extremely good error messages, and effort has been specifically
+taken when implementing the compiler to provide good error messages. TODO: Add
+link to relevant blog posts here.
 
-Haskell monad errors such, C++ template errors suck
+## Things to be wary of
 
-SLIDE BAD SIDES
-
-– Very new technology
-– JavaScript is readable but doens't directly map your code
+– It's a very new technology
+– It's not simply a syntax extension to JavaScript, like CoffeeScript or the
+  lower stages of Babel: It's a completely different language and its compiled
+  JavaScript code is readable and commented, for what it is, but doens't map
+  as straightforwardly to the code you wrote.
