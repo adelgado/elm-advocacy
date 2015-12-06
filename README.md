@@ -187,6 +187,7 @@ link to relevant blog posts here.
 ## Things to be wary of
 
 – It's a very new technology
+
 – It's not simply a syntax extension to JavaScript, like CoffeeScript or the
   lower stages of Babel: It's a completely different language and its compiled
   JavaScript code is readable and commented, for what it is, but doens't map
