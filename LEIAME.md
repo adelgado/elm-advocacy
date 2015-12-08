@@ -55,22 +55,15 @@ ser vencido. Linguagens como C++, Delphi, Java...
 A realidade é que essas experiências refletem um *approach* à tipagem que é
 completamente diferente do *approach* das linguagens da família do Elm. Em uma
 linguagem orientada a objetos tradicional, existe normalmente uma necessidade
-de declarar o tipo de algo, e
+de declarar o tipo de algo, mas em Elm tudo é implicitamente tipado: o compilador realiza *inferência de tipos*, que é observar o fluxo de informação no programa e derivar disso os tipos que as funções ou valores podem ter.
 
-The reality is that these experiences reflect an approach to typing that is completely
-different from the approach functional languages from the family that Elm comes from
-traditionally take. Whereas in a typed OO language there is generally a need
-to declare what type something is, in Elm everything is implicitely typed: the
-compiler performs *type inference*, which is to observe the flow of information
-in the program and derive from this the types that functions or values can have.
+Isso quer dizer que esse pedaço de código já sabe que o seu tipo de entrada
+é uma única variável que é um inteiro, ja'que você está adicionando ele a 2,
+e que o seu tipo de retorno tambémé um inteiro.
 
-This means that this snippet of code already knows that its input type is a
-single variable that's an integer, since you're adding it to 2, and that its
-return type is also an integer.
-
-If you try to call this with a string, `plusTwo "hello"`, the compiler will
-warn you of a type mismatch. We're getting this for free because of the type
-inference.
+Se você tentar chamar isso com uma string, `plusTwo "Olá"`, o compilador
+te alertará de um mismatch de tipos. Nós ganhamos isso de graça por causa da
+inferência de tipos.
 
 Additionally, any value or function can be given type annotations. This means
 that while type annotations – but not types – are fully optional, you can still
