@@ -55,7 +55,9 @@ ser vencido. Linguagens como C++, Delphi, Java...
 A realidade é que essas experiências refletem um *approach* à tipagem que é
 completamente diferente do *approach* das linguagens da família do Elm. Em uma
 linguagem orientada a objetos tradicional, existe normalmente uma necessidade
-de declarar o tipo de algo, mas em Elm tudo é implicitamente tipado: o compilador realiza *inferência de tipos*, que é observar o fluxo de informação no programa e derivar disso os tipos que as funções ou valores podem ter.
+de declarar o tipo de algo, mas em Elm tudo é implicitamente tipado: o
+compilador realiza *inferência de tipos*, que é observar o fluxo de informação
+no programa e derivar disso os tipos que as funções ou valores podem ter.
 
 Isso quer dizer que esse pedaço de código já sabe que o seu tipo de entrada
 é uma única variável que é um inteiro, ja'que você está adicionando ele a 2,
@@ -65,13 +67,14 @@ Se você tentar chamar isso com uma string, `plusTwo "Olá"`, o compilador
 te alertará de um mismatch de tipos. Nós ganhamos isso de graça por causa da
 inferência de tipos.
 
-Additionally, any value or function can be given type annotations. This means
-that while type annotations – but not types – are fully optional, you can still
-explicitely document them in order to ease the understanding of the code and
-hint the compiler to the types you actually mean.
+Adicionalmente, quaisquer valores ou funções podem ser dadas anotações de tipo.
+Isso quer dizer que por mais que as anotações de tipo – mas não a tipagem  –
+sejam plenamente opcionais, você ainda pode documentar os tipos explicitamente
+para facilitar a compreensão do código e dar dicas pro compilador dos tipos que
+você realmente quer dizer.
 
-The function we were discussing is understood by the compiler as if it'd
-been defined and annotated as
+A função que nós estávamos discutindo é compreendida pelo compilador como se
+tivesse sido definida e anotada da seguinte forma:
 
 ```
 plusTwo : Int -> Int
@@ -79,59 +82,61 @@ plusTwo =
   n + 2
 ```
 
-While type inference in itself is already nice, the type system that Elm provides
-is fundamentally difference from the one JavaScript provides, due to the fact
-that it offers parametric types. If you know Generics from C#/Java or templates
-from C++, you're kinda already familiar with the idea of parametric types, but
-Elm's execution of it brings us much more.
+Mesmo que a inferência de tipo em si já seja legal, o sistema de tipos que o Elm
+provê é fundamentalmente diferente daquele que o JavaScript possui, devido ao
+fato de que o do Elm oferece tipos paramétricos. Se você já conhece genêricos do
+C#/Java ou templates do C++, você já está familiarizado com a ideia de tipos
+paramétricos, mas a execução específica desse conceito no Elm nos trás
+muito mais.
 
-The most common example is the `Maybe` type. The `Maybe` type takes another
-type as an argument (let's say `String`), and its instances will hold one
-of two possible values at any time: Either the value `Nothing`, or a value
-of type `Just String`.
+O exemplo mais comum é o tipo `Maybe`. Ele leva um outro tipo como argumento
+(digamos `String`), e suas instânciass terão a qualquer momento um de dois
+possíveis valores: O valor `Nothing`, ou um valor do tipo `Just String`.
 
 ```
 frob : Maybe String -> Foo
 frob x =
   case x of
     Nothing ->
-      -- do something here
+      -- fazer alguma coisa aqui
     Just x' ->
-      -- do something else
+      -- fazer alguma coisa aqui
 ```
 
-Now, this is cool is because the tradicional way to model this in JS would
-be to use `null`. I'd have a variable, that I'd know would either hold a string,
-or `null`. So in order to be fully safe, I'd have to check every time that I'm
-using this value, whether it holds something relevant or whether it is `null`.
+Isso é legal porque a forma tradicional de modelar isso em JS seria utilizando
+`null`. Eu teria uma variável que eu sei que poderia guardar ou uma `String` ou
+`null`. Para estarmos completamente seguros seria então necessário, sempre que
+se usar o valor, checar se ele contém algo relevante ou se contém um `null`.
 
-Except this requires great discipline, and potentially any value can be `null`,
-so in reality what happens is that these checks are nto written and you get
-exeptions in runtime. And that's not even accounting for the fact that nothing
-prevents other code from assigning something completely unexpected to it.
+O problema é que isso requer muita disciplina, e potencialmente qualquer valor
+pode ser `null`, então na realidade o que acontece é que essas verificações não
+são sempre escritas e ficamos passíveis de receber exceções em tempo de
+execução. E ainda não estamos sequer considerando a possibilidade de alguém
+atribuir a uma variável um valor completamente inesperado.
 
-Elm aims to provide code that runs with **no runtime exceptions**. The big
-caveat for that statement is that nothing prevents the compiler to be buggy,
-of course. However, barring bugs in the compiler, Elm's
-**semantics are such that runtime errors are not possible**.
+Elm visa prover código que roda sem *exceções em tempo de execução* (runtime
+exceptions). Há um grande porém para essa frase que é o fato de que nada previne
+que o compilador em si tenha bugs, é claro. Contudo, excetuando-se bugs de
+compilador, a **semântica do Elm é tal que erros em tempo de execução não são
+possíveis**.
 
-This rich type system enables us to defeat whole classes of bugs that happen
-in JS. In Elm, the language will force you, at the syntactica level, to
-effectively destructure whatever value you think you're holding and make sure
-you handle it in the code. So, for example, if I have a value `x` typed as a
-`Maybe String`, and I want to access it, I need code such as
+Esse rico sistema de tipos nos possibilita facilemente derrotar uma série de
+bugs que ocorrem em JS. Em Elm, a linguagem te forçará, a nível sintático, a
+efetivamente desestruturar o valor que você tem e a lidar com isso no código.
+Então, por exemplo, se você tem um valor `x` tipado como `Maybe String`, e você
+quer acessá-lo, será necessário código como
 
-
-A failure to handle one of the cases would result in an error at *compile time*.
-This gets even better with types that hold set of specific values. We could have,
-for example, a type such as
+Se você não lidar com todos os casos, isso geraria um erro em *tempo de
+compilação.* Isso fica ainda melhor com tipos cujos valores vêm de um grupo
+específico. Poderíamos, por exemplo, ter um tipo na forma
 
 ```
 type Readable = Article | Quizz | Review | GroupList
 ```
 
-If anywhere in the code I need to know and evaluate the type of a value of this type,
-the compiler will force me to handle all possible scenarios.
+Se em qualquer lugar do código eu precisar avaliar um valor desse tipo, o
+compilador me obrigará a lidar com todos os cenários possíveis.
+
 
 ```
 case post of
@@ -142,55 +147,52 @@ case post of
 ...
 ```
 
-If I happen to forget one of the possibilities, my code will not compile. Yet another
-bug that would only be caught in production, that was mitigated by having a smart
-compiler and a nice type system.
+Se eu por acaso esquecer uma das possibilidades, meu código não compilará.
 
-There are of course many other advantages and very interesting characteristics
-regarding Elm's type system, but I have little time now, so I'll send some more
-references around at some point afterwards.
+## Imutável
 
-## Immutable
+Os benefícios que a **imutabilidade** nos traz já podem ser por nós observados
+com o surgimento e aumento do uso de uma série de bibliotecas de estruturas de
+dados imutáveis em JavaScript. A ideia de que uma referência específica sempre
+apontará para o mesmo valor, que nenhuma outra função pode modificá-la de outro
+lugar, e que se em algum momento uma variável tinha um valor, ela *sempre* terá
+esse valor, nos leva a uma habilidade de raciocinar sobre o código muito mais
+livre e efetivamente.
 
-The benefits **immutability** bring to the table are already being observed by us
-with the surge of immutable data structure libraries that we now use in JS. The
-idea that a specific reference will always hold the same value, that no other
-function can mutate it from somewhere else, that if at some point some variable
-had some value, it'll *always* have this value, brings us an ability to reason
-about code much more freely and effectively.
+## Arquitetura
 
-## Architecture
+Vamos falar agora da **Arquitetura Elm**. É muito interessante falar sobre isso
+com pessoas que estão utilizando Redux, pois muitos dos conceitos são os mesmos
+ou muito perto. A ideia de fluxo unidirecional de dados, por exemplo, e por que
+isso é legal, já é completamente aceita.
 
-Let's talk about the **Elm Architecture** now. The Elm architecture is very nice
-to talk about for people who are using Redux, because many of the concepts
-are either the same or very close. The idea of unidirectional data flow, for
-example, and why it's nice, is completely accepted by you guys.
+Essa arquitetura tem basicamente três aprtes: um modelo `Model`, uma função de
+*update*, e uma *view*. Um `Model` é utilizado para manter o estado do programa.
+A função `Update` recebe como parâmetro uma ação (`Action`) e uma cópia do
+modelo e retorna um novo modelo que será feito o modelo atual. É conceitualmente
+equivalente aos `reducers` to Redux.
 
-The Elm architecture has basically three parts: a `Model`, an `Update` function,
-and a `View`. A `Model` is used to hold the data that the program is operating on.
-The `Update` function is a function that receives an `Action`, a copy of the model,
-and returns a model, which is then made the current model. It is conceptually
-equivalent to Redux's `Reducer`s.
+Uma `View`, finalmente, é uma função que recebe um objeto de modelo e retorna
+HTML.
 
-A `View`, finally, is a function that takes a model object and returns HTML.
+Ocorre atualmente muita alogamia (*cross polination*) entre Redux e Elm. Não é
+incomum encontrar, ao se ler os *issues* do Redux, pessoas ilustrando a solução
+Elm para o problema análogo.
 
-There is currently lots of cross-polination between Redux and Elm. It's not uncommon
-when reading Redux's issues to be faced with people illustrating Elm's solution
-to a specific problem.
+Já vê semelhanças?
 
-See the similarities?
+## Mensagens de erro legais
 
-## Nice error messages
+Elm tem mensagens de erro extremamente boas, e esforço foi especificamente
+colocado ao implementar o compilador para prover boas mensagens de erro. TODO:
+Adicionar link para os blog posts relevantes.
 
-Elm has extremely good error messages, and effort has been specifically
-taken when implementing the compiler to provide good error messages. TODO: Add
-link to relevant blog posts here.
+## Coisas para se tomar cuidado
 
-## Things to be wary of
+– É uma tecnologia muito nova
 
-– It's a very new technology
-
-– It's not simply a syntax extension to JavaScript, like CoffeeScript or the
-  lower stages of Babel: It's a completely different language and its compiled
-  JavaScript code is readable and commented, for what it is, but doens't map
-  as straightforwardly to the code you wrote.
+- Não é meramente uma extensão sintática do JavaScript, como o CoffeeScript ou
+  os estágios mais baixos do Babel: É uma linguagem completamente diferente e
+  por mais que o JavaScript produzido ao compilar Elm seja legível e bem
+  comentado, considerando o que é, ele ainda assim não se mapeia tão diretamente
+  ao código que você escreveu.
