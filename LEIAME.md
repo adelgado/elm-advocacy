@@ -5,7 +5,7 @@
 Elm é uma linguagem web de *frontend* que compila para JavaScript e HTML. Seu
 *design* foi influenciado por linguagens como Haskell, Rust ou OCaml. Além
 disso, existe algo chamado de Arquitetura Elm (*Elm Architecture*), que é um
-conjunto de padrões e divisões com relação à oragnização e estrutura do fluxo de
+conjunto de padrões que define e estrutura o fluxo de
 informação numa aplicação específica.
 
 ## Por que Elm?
@@ -166,7 +166,7 @@ com pessoas que estão utilizando Redux, pois muitos dos conceitos são os mesmo
 ou muito perto. A ideia de fluxo unidirecional de dados, por exemplo, e por que
 isso é legal, já é completamente aceita.
 
-Essa arquitetura tem basicamente três aprtes: um modelo `Model`, uma função de
+Essa arquitetura tem basicamente três partes: um modelo `Model`, uma função de
 *update*, e uma *view*. Um `Model` é utilizado para manter o estado do programa.
 A função `Update` recebe como parâmetro uma ação (`Action`) e uma cópia do
 modelo e retorna um novo modelo que será feito o modelo atual. É conceitualmente
